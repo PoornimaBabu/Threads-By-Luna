@@ -3,7 +3,7 @@
         <h3 class="text-lg font-bold text-center text-gray-700 tracking-wide">Categories</h3>
     </div>
     <div class="mt-4 space-y-3">
-        @for(category of getCategory(); track category){
+        @for(category of getCategory(null); track category){
         <details class="group rounded-t-xl border border-gray-200 bg-white ">
             <summary class="summary">
                 <span class="text-gray-700">{{ category.category }}</span>

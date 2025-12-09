@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { Category } from '../types/category';
@@ -16,11 +16,13 @@ export class SideNavbar {
   categories: Category[] = [];
 
   constructor(categoryService: CategoryService){
-    this.categories = categoryService.getCategories();
+    categoryService.getCategories().subscribe(categories => {
+      this.categories = categories;
+    });
   }
 
-  getCategory(categoryId?: number): Category[] {
-    return this.categories.filter(cat => cat.parent_category_id === categoryId);
+  getCategory(categoryId: number | null): Category[] {
+    return this.categories.filter(cat => categoryId ? cat.parent_category_id === categoryId : cat.parent_category_id === null);
   }
 
 }
