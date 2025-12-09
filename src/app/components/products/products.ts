@@ -3,13 +3,14 @@ import { ProductService } from './service/product-service';
 import { Product } from './product.type';
 import { CommonModule } from '@angular/common';
 import { CartState } from '../../state/cart.state';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { AddItemToCart } from '../../action/cart.action';
 import { Observable } from 'rxjs';
+import { Base64ToUrlPipe } from '../../pipe/base64-to-url-pipe';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule],
+  imports: [CommonModule, Base64ToUrlPipe],
   templateUrl: './products.html',
   styleUrl: './products.css',
   providers: [ProductService]
@@ -19,8 +20,10 @@ export class Products {
   cartTotal$: Observable<number> = inject(Store).select(CartState.cartTotal);
 
   constructor(productService: ProductService, private store: Store){
-    this.allProducts = productService.getAllProducts();
+    productService.getAllProducts().subscribe(products => this.allProducts = products.map(p => p));
+    console.log('allProducts', this.allProducts);
   }
+
 
   addItem(product: Product){
     const action = new AddItemToCart(product);
